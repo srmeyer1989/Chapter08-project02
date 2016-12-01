@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="utf-8">
@@ -16,12 +16,27 @@
    <script src="bootstrap3_defaultTheme/assets/js/html5shiv.js"></script>
    <script src="bootstrap3_defaultTheme/assets/js/respond.min.js"></script>
    <![endif]-->
+   
+   <?php include 'art-header.inc.php';
+		 include 'art-data.php';
+   ?>
+   
+   <?php function outputCartRow($file, $product, $quantity, $price){
+	   $amount = number_format($quantity * $price,2);
+	   $price = number_format($price,2);
+		echo "<tr>";
+			echo "<td><img class='img-thumbnail' src='images/art/tiny/$file' alt'...'></td>";
+			echo "<td>$product</td>";
+			echo "<td>$quantity</td>";
+			echo "<td>$$price</td>";
+			echo "<td>$$amount</td>";
+		echo "</tr>";
+		return $amount;
+   } ?>
+   
 </head>
 
 <body>
-
-    <?php include 'art-header.inc.php'
-          include 'art-data.php';?>
 
 <div class="container">
 
@@ -37,35 +52,35 @@
             <th>Price</th>
             <th>Amount</th>
          </tr>
-         <tr>
-            <td><img class="img-thumbnail" src="images/art/tiny/116010.jpg" alt="..."></td>
-            <td>Artist Holding a Thistle</td>
-            <td>2</td>
-            <td>$500</td>
-            <td>$1000</td>
-         </tr>
-         <tr>
-            <td><img class="img-thumbnail" src="images/art/tiny/113010.jpg" alt="..."></td>
-            <td>Self-portrait in a Straw Hat</td>
-            <td>1</td>
-            <td>$700</td>
-            <td>$700</td>
-         </tr> 
+		 
+<?php outputCartRow($file1, $product1, $quantity1, $price1); ?>
+<?php outputCartRow($file2, $product2, $quantity2, $price2); ?>
+         
          <tr class="success strong">
             <td colspan="4" class="moveRight">Subtotal</td>
-            <td >$1700</td>
+         <?php  $subtotal = ($quantity1*$price1) + ($quantity2 * $price2);
+				$subtotal2 = number_format($subtotal,2);
+		    echo "<td>$$subtotal2</td>"; ?>
          </tr>
          <tr class="active strong">
             <td colspan="4" class="moveRight">Tax</td>
-            <td>$170</td>
+         <?php  $tax = number_format($subtotal * 10 /100,2); 
+		    echo "<td>$$tax</td>"; ?>
          </tr>  
          <tr class="strong">
             <td colspan="4" class="moveRight">Shipping</td>
-            <td>$100</td>
+		<?php  if($subtotal > 2000){
+					$shipping = 0; }
+				else{
+					$shipping = 100;
+				}
+				$shippingDisplay = number_format($shipping,2);
+		    echo "<td>$$shippingDisplay</td>"; ?>
          </tr> 
          <tr class="warning strong text-danger">
             <td colspan="4" class="moveRight">Grand Total</td>
-            <td>$1970</td>
+        <?php  $grandtotal = number_format($subtotal + $tax + $shipping,2);
+		    echo "<td>$$grandtotal</td>"; ?>
          </tr>    
          <tr >
             <td colspan="4" class="moveRight"><button type="button" class="btn btn-primary" >Continue Shopping</button></td>
@@ -75,7 +90,8 @@
 
 </div>  <!-- end container -->
 
-    <?php include 'art-footer.inc.php';?>
+<?php include 'art-footer.inc.php'; ?>
+
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
